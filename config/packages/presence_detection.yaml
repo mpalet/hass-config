@@ -1,0 +1,58 @@
+device_tracker:
+  - platform: composite
+    name: marc
+    entity_id:
+      - binary_sensor.marc_presence
+  - platform: composite
+    name: katherine
+    entity_id:
+      - binary_sensor.katherine_presence
+  - platform: composite
+    name: carles
+    entity_id:
+      - device_tracker.carles_phone_wifi
+  - platform: composite
+    name: cris
+    entity_id:
+      - device_tracker.cris_phone_wifi
+
+group:
+  people:
+    name: Awesome People
+    entities:
+      - device_tracker.marc
+      - device_tracker.katherine
+      - device_tracker.carles
+      - device_tracker.cris
+
+binary_sensor:
+  - platform: bayesian
+    prior: 0.5
+    name: marc_presence
+    probability_threshold: 0.9
+    observations:
+    - entity_id: device_tracker.marc_phone_wifi
+      prob_given_true: 0.9
+      prob_given_false: 0.1
+      platform: 'state'
+      to_state: 'home'
+    - entity_id: device_tracker.marc_phone_bt
+      prob_given_true: 0.9
+      prob_given_false: 0.1
+      platform: 'state'
+      to_state: 'home'
+  - platform: bayesian
+    prior: 0.5
+    name: katherine_presence
+    probability_threshold: 0.9
+    observations:
+    - entity_id: device_tracker.katherine_phone_wifi
+      prob_given_true: 0.9
+      prob_given_false: 0.1
+      platform: 'state'
+      to_state: 'home'
+    - entity_id: device_tracker.katherine_phone_bt
+      prob_given_true: 0.9
+      prob_given_false: 0.1
+      platform: 'state'
+      to_state: 'home'

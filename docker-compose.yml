@@ -4,7 +4,7 @@ version: '2'
 services:
   hass:
     container_name: hass
-    image: lroguet/rpi-home-assistant:latest 
+    image: lroguet/rpi-home-assistant:0.100.0 
     network_mode: "host"
     volumes:
       - ./config:/config

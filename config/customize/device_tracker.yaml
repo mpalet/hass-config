@@ -1,0 +1,20 @@
+device_tracker.marc_phone_wifi:
+  hidden: true
+
+device_tracker.marc_phone_bt:
+  hidden: true
+
+device_tracker.katherine_phone_wifi:
+  hidden: true
+
+device_tracker.katherine_phone_bt:
+  hidden: true
+
+device_tracker.katherine_fitbit:
+  hidden: true
+
+device_tracker.cris_phone_wifi:
+  hidden: true
+
+device_tracker.carles_phone_wifi:
+  hidden: true

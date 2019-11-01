@@ -23,7 +23,8 @@
 - id: '1517996178027'
   alias: Not home
   trigger:
-  - entity_id: group.all_devices
+  - entity_id: group.people
+    from: home
     platform: state
     to: not_home
   condition: []
@@ -48,7 +49,8 @@
 - id: '1517996178028'
   alias: At home
   trigger:
-  - entity_id: group.all_devices
+  - entity_id: group.people
+    from: not_home
     platform: state
     to: home
   condition: []

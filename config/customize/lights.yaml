@@ -1,0 +1,4 @@
+light.living_room:
+  hidden: True
+light.group_for_wakeup:
+  hidden: True
