@@ -1,0 +1,45 @@
+#################################################################
+## Groups
+#################################################################
+
+#default_view:
+#    view: yes
+#    icon: mdi:home-assistant
+#    entities:
+#      - group.investments
+#      - group.information
+#      - group.all_lights
+#      - group.home_security
+#      - group.switches
+#      - group.ring_doorbell
+#      - group.financial
+
+living_room:
+  name: Living Room
+  entities:
+    - light.hue_color_light_1
+    - light.living_sofa
+    - light.living_footlamp
+    - light.living_backlight
+    - switch.tv_speakers
+    - media_player.sony_bravia_tv
+    - climate.living
+    - sensor.living_temperature
+    - sensor.living_humidity
+    - sensor.living_aqi
+    - switch.living_heater
+    - fan.air_purifier
+
+bedroom:
+  name: Bedroom
+  entities:
+    - light.bedroom
+    - light.bedroom_marc
+    - light.bedroom_katherine
+
+hydroponic:
+  name: Hydroponic
+  entities:
+    - switch.hydroponic_pump
+    - sensor.hydroponic_temperature
+    - sensor.hydroponic_humidity

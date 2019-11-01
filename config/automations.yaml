@@ -1,0 +1,139 @@
+- action:
+  - data:
+      entity_id: switch.tv_speakers
+    service: switch.turn_on
+  alias: TV speakers on
+  condition: []
+  id: '1515671338814'
+  trigger:
+  - entity_id: media_player.sony_bravia_tv
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      entity_id: switch.tv_speakers
+    service: switch.turn_off
+  alias: TV speakers off
+  condition: []
+  id: '1515671430801'
+  trigger:
+  - entity_id: media_player.sony_bravia_tv
+    platform: state
+    to: 'off'
+- id: '1517996178027'
+  alias: Not home
+  trigger:
+  - entity_id: group.all_devices
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data:
+      message: All Away
+      title: '*Home Assistant - Occupancy*'
+    service: notify.telegram_pusher
+  - data:
+      away_mode: 'on'
+      entity_id: climate.living
+    service: climate.set_away_mode
+  - data:
+      entity_id: automation.good_morning
+    service: automation.turn_off
+  - data:
+      entity_id: fan.air_purifier
+    service: fan.turn_off
+  - data:
+      entity_id: group.all_lights
+    service: light.turn_off
+- id: '1517996178028'
+  alias: At home
+  trigger:
+  - entity_id: group.all_devices
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      message: '{% for item in states.device_tracker if states(item.entity_id) ==
+        ''home'' %}{{ item.entity_id }}, {% endfor %} are home'
+      title: '*Home Assistant - Occupancy*'
+    service: notify.telegram_pusher
+  - data:
+      away_mode: 'off'
+      entity_id: climate.living
+    service: climate.set_away_mode
+  - data:
+      entity_id: automation.good_morning
+    service: automation.turn_on
+  - data:
+      entity_id: fan.air_purifier
+    service: fan.turn_on
+- action:
+  - data_template:
+      entity_id: climate.living
+      temperature: '{{ states(''input_number.living_temp'') | float }}'
+    service: climate.set_temperature
+  alias: Living temp slider
+  condition: []
+  id: '1518087195779'
+  trigger:
+  - entity_id: input_number.living_temp
+    platform: state
+- action:
+  - data_template:
+      entity_id: climate.living
+      temperature: '{{ states(''input_number.living_temp_night'') | float }}'
+    service: climate.set_temperature
+  alias: Turn down heater temp night
+  condition:
+  - condition: template
+    value_template: '{{ now().hour == states.input_datetime.climate_night_time.attributes.hour
+      and  now().minute == states.input_datetime.climate_night_time.attributes.minute
+      }}'
+  id: '1518088729905'
+  trigger:
+  - entity_id: sensor.date_time
+    platform: state
+- action:
+  - data_template:
+      entity_id: climate.living
+      temperature: '{{ states(''input_number.living_temp'') | float }}'
+    service: climate.set_temperature
+  alias: Turn up heater temp day
+  condition:
+  - condition: template
+    value_template: '{{ now().hour == states.input_datetime.climate_day_time.attributes.hour
+      and  now().minute == states.input_datetime.climate_day_time.attributes.minute
+      }}'
+  id: '1518088729905'
+  trigger:
+  - entity_id: sensor.date_time
+    platform: state
+- id: '1521757780232'
+  alias: good morning
+  trigger:
+  - at: 07:15
+    platform: time
+  condition:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  action:
+  - alias: ''
+    data: {}
+    service: script.1521718856230
+- id: '1526548886936'
+  alias: hydroponic pump schedule
+  trigger:
+    platform: time_pattern
+    minutes: '00'
+    seconds: '00'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.hydroponic_pump
+    service: switch.turn_on
+  - delay: 00:45:00
+  - data:
+      entity_id: switch.hydroponic_pump
+    service: switch.turn_off

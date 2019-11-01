@@ -1,0 +1,15 @@
+platform: nmap_tracker
+hosts: 10.0.0.0/24
+home_interval: 10 # minutes
+interval_seconds: 30
+consider_home: 10:00
+scan_options: " --privileged -F -n --host-timeout 5s "
+new_device_defaults:
+  track_new_devices: False
+  hide_if_away: True
+exclude:
+  - 10.0.0.1
+  - 10.0.0.2
+  - 10.0.0.20
+  - 10.0.0.30
+  - 10.0.0.200

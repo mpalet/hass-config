@@ -1,0 +1,9 @@
+#sonoff living sensor
+- platform: mqtt
+  state_topic: "/home/switch/tvspeakers/temperature"
+  name: "Living Temperature"
+  unit_of_measurement: "°C"
+- platform: mqtt
+  state_topic: "/home/switch/tvspeakers/humidity"
+  name: "Living Humidity"
+  unit_of_measurement: "%"

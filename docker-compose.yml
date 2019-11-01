@@ -1,0 +1,12 @@
+# docker-compose.yml
+version: '2'
+
+services:
+  hass:
+    container_name: hass
+    image: lroguet/rpi-home-assistant:latest 
+    network_mode: "host"
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped

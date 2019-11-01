@@ -1,0 +1,29 @@
+#airvisual sensors
+ - platform: airvisual
+   api_key: !secret airvisual_api_key
+   latitude: !secret latitude
+   longitude: !secret longitude
+   monitored_conditions:
+     - us
+     - cn
+#world air quiality sensors
+ - platform: waqi
+   token: !secret waki_token
+   locations:
+     - !secret city
+#air purifier sensors
+ - platform: template
+   sensors:
+     living_temperature:
+       friendly_name: "Living temperature"
+       unit_of_measurement: '°C'
+       device_class: temperature
+       value_template: "{{ state_attr('fan.air_purifier', 'temperature') }}"
+     living_humidity:
+       friendly_name: "Living humidity"
+       unit_of_measurement: '%'
+       device_class: humidity
+       value_template: "{{ state_attr('fan.air_purifier', 'humidity') }}"
+     living_aqi:
+       friendly_name: "Living AQI"
+       value_template: "{{ state_attr('fan.air_purifier', 'aqi') }}"

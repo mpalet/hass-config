@@ -1,0 +1,9 @@
+title: My Awesome Home
+views:
+    # View tab title.
+  - title: Example
+    panel: true
+    # Makes the first card fill the view
+    cards:
+      - type: thermostat
+        entity: climate.living

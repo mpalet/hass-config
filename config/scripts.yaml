@@ -1,0 +1,27 @@
+'1521718856230':
+  alias: bedrom.fade_in
+  sequence:
+  - data:
+      color_temp: 340
+      colors:
+      - - 0
+        - 0
+        - 0
+      - - 77
+        - 26
+        - 0
+      - - 154
+        - 51
+        - 0
+      - - 205
+        - 116
+        - 0
+      - - 255
+        - 140
+        - 30
+      - - 255
+        - 255
+        - 255
+      duration_in_sec: 1800
+      mqtt_topic: milight/0x6C9B/rgb_cct/0
+    service: python_script.milight_fade_in

@@ -1,0 +1,9 @@
+#hydroponic dht22 sensor
+ - platform: mqtt
+   state_topic: "/hydroponic/temperature"
+   name: "Hydroponic Temperature"
+   unit_of_measurement: "°C"
+ - platform: mqtt
+   state_topic: "/hydroponic/humidity"
+   name: "Hydroponic Humidity"
+   unit_of_measurement: "%"

@@ -1,0 +1,243 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude
+  longitude: !secret longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Madrid
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+system_health:
+
+#enables api
+api:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  base_url: !secret base_url
+  cors_allowed_origins:
+    - https://google.com
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - yeelight
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Text to speech
+tts:
+  - platform: google_translate
+    service_name: google_say
+
+# state recorder
+recorder:
+
+# enable MQTT
+mqtt:
+  password: !secret http_password
+  discovery: true
+  discovery_prefix: homeassistant
+
+#enable wemo
+wemo:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+#enable python scripts
+python_script:
+
+#BRAVIA TV
+media_player:
+  - platform: braviatv
+    host: 10.0.0.30
+
+#MQTT tv speakers switch
+switch:
+  - platform: mqtt
+    name: "TV speakers"
+    state_topic: "/home/switch/tvspeakers/relay/0"
+    command_topic: "/home/switch/tvspeakers/relay/0/set"
+    payload_on: 1
+    payload_off: 0
+    optimistic: false
+    qos: 0
+    retain: true
+  - platform: mqtt
+    name: "Living heater"
+    state_topic: "/home/switch/livingheater/relay/0"
+    command_topic: "/home/switch/livingheater/relay/0/set"
+    payload_on: 1
+    payload_off: 0
+    optimistic: false
+    qos: 0
+    retain: true
+#MQTT hydroponic water pump switch
+  - platform: mqtt
+    name: "hydroponic pump"
+    state_topic: "/hydroponic/relay/0"
+    command_topic: "/hydroponic/relay/0/set"
+    payload_on: 1
+    payload_off: 0
+    optimistic: false
+    qos: 0
+    retain: true
+
+sensor: !include_dir_merge_list sensor
+
+binary_sensor:
+#workday
+  - platform: workday
+    country: !secret country_code
+    province: !secret province_code
+
+climate:
+  - platform: generic_thermostat
+    name: Living
+    heater: switch.living_heater
+    target_sensor: sensor.living_temperature
+    away_temp: 14
+
+device_tracker: !include_dir_list device_tracker/
+
+#NOTIFIER
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_api_key
+    allowed_chat_ids:
+      - !secret telegram_chat_id
+
+notify:
+  - name: telegram_pusher
+    platform: telegram
+    chat_id: !secret telegram_chat_id
+
+
+# inputs
+input_number:
+  living_temp:
+    name: Living temp
+    min: 12
+    max: 25
+    step: 0.5
+    unit_of_measurement: "ºC"
+  living_temp_night:
+    name: Living temp night
+    min: 12
+    max: 25
+    step: 0.5
+    unit_of_measurement: "ºC"
+
+input_datetime:
+  climate_day_time:
+    name: Climate day time
+    has_date: false
+    has_time: true
+  climate_night_time:
+    name: Climate night time
+    has_date: false
+    has_time: true
+
+light:
+  - name: "Bedroom Marc"
+    platform: mqtt
+    schema: json
+    command_topic: "milight/0x6C9B/rgb_cct/1"
+    state_topic: "milight/state/0x6C9B/rgb_cct/1"
+    brightness: true
+    color_temp: true
+    rgb: true
+
+  - name: "Bedroom Katherine"
+    platform: mqtt
+    schema: json
+    command_topic: "milight/0x6C9B/rgb_cct/2"
+    state_topic: "milight/state/0x6C9B/rgb_cct/2"
+    brightness: true
+    color_temp: true
+    rgb: true
+
+  - name: "Bedroom"
+    platform: mqtt
+    schema: json
+    command_topic: "milight/0x6C9B/rgb_cct/0"
+    state_topic: "milight/state/0x6C9B/rgb_cct/0"
+    brightness: true
+    color_temp: true
+    rgb: true
+
+  - name: "Living backlight"
+    platform: mqtt
+    schema: json
+    command_topic: "milight/0xAAAA/rgb/0"
+    state_topic: "milight/state/0xAAAA/rgb/0"
+    brightness: true
+    rgb: true
+
+
+yeelight:
+  devices:
+    10.0.0.41:
+      name: Living sofa
+    10.0.0.42:
+      name: Living footlamp
+
+google_assistant:
+  project_id: !secret google_assistant_project_id
+  api_key: !secret google_assistant_api_key
+  exposed_domains:
+    - switch
+    - light
+    - fan
+    - sensor
+
+fan:
+  - platform: xiaomi_miio
+    host: 10.0.0.35
+    token: !secret xiami_miio_token
+    name: "Air purifier"
+
+hue:
+  bridges:
+    - host: 10.0.0.43
+      allow_unreachable: true
+      allow_hue_groups: false
